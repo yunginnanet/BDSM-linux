@@ -6,10 +6,8 @@ unattended with Windows Task Scheduler.
 
 ### Fork
 
-This fork allows you to run this application in operating systems that *aren't complete fucking garbage*. It also
-removes some *completely moronic obfuscation that serves no purpose*. Anyone that is going to read the source code of a
-program that downloads mods for a hentai game is probably not going to be deterred by a few lines of code. It's a cool
-program man.. but wtf!?
+This fork allows you to run this application on *nix platforms. It also removes some ofuscation that realistically serves no purpose. Anyone that is going to read the source code of a
+program that downloads mods for a hentai game is probably not going to be deterred by a few lines of code.
 
 This is intended for those of us chads that run illusion games in WINE.
 
@@ -22,7 +20,9 @@ This is intended for those of us chads that run illusion games in WINE.
 
 ### Status
 
-As of writing the thing runs, going to test it fully momentarily.
+As of writing the thing runs, ~~going to test it fully momentarily.~~
+
+As of writing, it's successfully scanning the FTP server... More test results soon :)
 
 #### Known issues
 
