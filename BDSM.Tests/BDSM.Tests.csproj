@@ -8,6 +8,7 @@
     <IsPackable>false</IsPackable>
 
     <Platforms>x64</Platforms>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
   <ItemGroup>
