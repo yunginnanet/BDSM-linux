@@ -1,36 +1,54 @@
 namespace BDSM.Lib;
-public record Exceptions
+
+public abstract record Exceptions
 {
 	public class BDSMInternalFaultException : Exception
 	{
-		const string BugReportSuffix = " Please file a bug report and provide this information. https://github.com/RobotsOnDrugs/BDSM/issues\r\n";
-		internal BDSMInternalFaultException() { }
-		internal BDSMInternalFaultException(string? message) : this(message, true) { }
-		internal BDSMInternalFaultException(string? message, bool include_bug_report_link) : base(message + (include_bug_report_link ? "" : BugReportSuffix)) { }
-		internal BDSMInternalFaultException(string? message, Exception? innerException) : this(message, innerException, true) { }
-		internal BDSMInternalFaultException(string? message, Exception? innerException, bool include_bug_report_link) : base(message + (include_bug_report_link ? "" : BugReportSuffix), innerException) { }
+		private const string BugReportSuffix =
+			" Please file a bug report and provide this information. https://github.com/yunginnanet/BDSM-linux/issues\r\n";
+
+		internal BDSMInternalFaultException(string totalChunkBytesIsGreaterThanTheChunkLength) { }
+
+		internal BDSMInternalFaultException(string? message, bool includeBugReportLink) : base(message +
+			(includeBugReportLink ? "" : BugReportSuffix))
+		{
+		}
+
+		internal BDSMInternalFaultException(string? message, Exception? innerException,
+			bool includeBugReportLink = true) : base(message + (includeBugReportLink ? "" : BugReportSuffix),
+			innerException)
+		{
+		}
 	}
-	public class FTPOperationException : Exception
+
+	public class FtpOperationException : Exception
 	{
-		public FTPOperationException() { }
-		public FTPOperationException(string? message) : base(message) { }
-		public FTPOperationException(string? message, Exception? innerException) : base(message, innerException) { }
+		protected FtpOperationException() { }
+		public FtpOperationException(string? message) : base(message) { }
+		public FtpOperationException(string? message, Exception? innerException) : base(message, innerException) { }
 	}
-	public class FTPConnectionException : FTPOperationException
+
+	public class FtpConnectionException : FtpOperationException
 	{
-		public FTPConnectionException() { }
+		public FtpConnectionException() { }
 
-		public FTPConnectionException(string? message) : base(message) { }
+		public FtpConnectionException(string? message) : base(message) { }
 
-		public FTPConnectionException(string? message, Exception? innerException) : base(message, innerException) { }
+		public FtpConnectionException(string? message, Exception? innerException) : base(message, innerException) { }
 	}
-	public class FTPTaskAbortedException : FTPOperationException
+
+	public abstract class FtpTaskAbortedException : FtpOperationException
 	{
-		public FTPTaskAbortedException() : base() { }
+		protected FtpTaskAbortedException()
+		{
+		}
 
-		public FTPTaskAbortedException(string? message) : base(message) { }
+		protected FtpTaskAbortedException(string? message) : base(message) { }
 
-		public FTPTaskAbortedException(string? message, Exception? innerException) : base(message, innerException) { }
+		protected FtpTaskAbortedException(string? message, Exception? innerException) : base(message, innerException)
+		{
+		}
+
 		public override Dictionary<string, string> Data { get; } = new() { { "File", "" } };
 	}
 }

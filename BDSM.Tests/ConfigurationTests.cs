@@ -9,9 +9,9 @@ public class ConfigurationTests
 	public void ConvertOldUserConfigDefault()
 	{
 		FullUserConfiguration expected = DefaultFullUserConfigurationHS2;
-		FullUserConfiguration actual = ConvertOldUserConfig(OldUserConfigurationNormal);
-		Assert.Equal(expected.GamePath, actual.GamePath);
-		Assert.Equal(expected.ConnectionInfo, actual.ConnectionInfo);
+		FullUserConfiguration actual   = ConvertOldUserConfig(OldUserConfigurationNormal);
+		Assert.Equal(expected.GamePath,         actual.GamePath);
+		Assert.Equal(expected.ConnectionInfo,   actual.ConnectionInfo);
 		Assert.Equal(expected.BasePathMappings, actual.BasePathMappings);
 		Assert.Equal(expected.PromptToContinue, actual.PromptToContinue);
 	}

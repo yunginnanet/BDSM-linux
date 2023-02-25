@@ -7,83 +7,87 @@ namespace BDSM.Lib;
 
 public static class Utility
 {
-	public static ConcurrentBag<PathMapping> GetPathMappingsFromSkipScanConfig(SkipScanConfiguration config, FullUserConfiguration userconfig)
+	public static ConcurrentBag<PathMapping> GetPathMappingsFromSkipScanConfig(SkipScanConfiguration config,
+		FullUserConfiguration                                                                        userconfig)
 	{
-		ConcurrentBag<PathMapping> _mappings = new();
+		ConcurrentBag<PathMapping> mappings = new();
 		foreach (string pathmap in config.FileMappings)
 		{
-			string[] _map_split = pathmap.Split(" | ");
-			PathMapping _map = new()
+			string[] mapSplit = pathmap.Split(" | ");
+			PathMapping map = new()
 			{
-				RootPath = userconfig.ConnectionInfo.RootPath,
-				RemoteRelativePath = _map_split[0],
-				GamePath = userconfig.GamePath,
-				LocalRelativePath = _map_split[1],
-				FileSize = null,
-				DeleteClientFiles = false
+				RootPath           = userconfig.ConnectionInfo.RootPath,
+				RemoteRelativePath = mapSplit[0],
+				GamePath           = userconfig.GamePath,
+				LocalRelativePath  = mapSplit[1],
+				FileSize           = null,
+				DeleteClientFiles  = false
 			};
-			_mappings.Add(_map);
+			mappings.Add(map);
 		}
-		return _mappings;
+
+		return mappings;
 	}
+
 	public static FileDownload PathMappingToFileDownload(PathMapping pm)
 	{
-		List<DownloadChunk> chunks = new();
-		long filesize = (long)pm.FileSize!;
-		const int chunksize = 1024 * 1024 * 10;
-		(long full_chunks, long remaining_bytes) = Math.DivRem(filesize, chunksize);
-		long num_chunks = full_chunks + ((remaining_bytes > 0) ? 1 : 0);
-		for (int i = 0; i < num_chunks; i++)
+		List<DownloadChunk> chunks    = new();
+		long                filesize  = (long)pm.FileSize!;
+		const int           chunksize = 1024 * 1024 * 10;
+		(long fullChunks, long remainingBytes) = Math.DivRem(filesize, chunksize);
+		long numChunks = fullChunks + (remainingBytes > 0 ? 1 : 0);
+		for (int i = 0; i < numChunks; i++)
 		{
-			long _offset = i * (long)chunksize;
-			long _remaining = filesize - _offset;
-			int _length = (_remaining > chunksize) ? chunksize : (int)_remaining;
+			long offset    = i * (long)chunksize;
+			long remaining = filesize - offset;
+			int  length    = remaining > chunksize ? chunksize : (int)remaining;
 			DownloadChunk chunk = new()
 			{
-				LocalPath = pm.LocalFullPath,
-				RemotePath = pm.RemoteFullPath,
-				Offset = _offset,
-				Length = _length
+				LocalPath = pm.LocalFullPath, RemotePath = pm.RemoteFullPath, Offset = offset, Length = length
 			};
 			chunks.Add(chunk);
 		}
-		return new()
+
+		return new FileDownload
 		{
-			LocalPath = pm.LocalFullPath,
-			RemotePath = pm.RemoteFullPath,
-			TotalFileSize = filesize,
-			ChunkSize = chunksize,
-			NumberOfChunks = (int)num_chunks,
+			LocalPath      = pm.LocalFullPath,
+			RemotePath     = pm.RemoteFullPath,
+			TotalFileSize  = filesize,
+			ChunkSize      = chunksize,
+			NumberOfChunks = (int)numChunks,
 			DownloadChunks = chunks.ToImmutableArray()
 		};
 	}
 
-	public static string RelativeModPathToPackName(this string relative_local_path)
+	public static string RelativeModPathToPackName(this string relativeLocalPath)
 	{
-		string[] path_parts = relative_local_path.Split('\\');
-		return path_parts[0] == "UserData" ? path_parts[0] : path_parts[1];
+		string[] pathParts = relativeLocalPath.Split('\\');
+		return pathParts[0] == "UserData" ? pathParts[0] : pathParts[1];
 	}
 
-	public static string FormatBytes(this int number_of_bytes) => FormatBytes((double)number_of_bytes);
-	public static string FormatBytes(this long number_of_bytes) => FormatBytes((double)number_of_bytes);
-	public static string FormatBytes(this double number_of_bytes)
-	{
-		return number_of_bytes switch
+	public static string FormatBytes(this int  numberOfBytes) => FormatBytes((double)numberOfBytes);
+	public static string FormatBytes(this long numberOfBytes) => FormatBytes((double)numberOfBytes);
+
+	public static string FormatBytes(this double numberOfBytes) =>
+		numberOfBytes switch
 		{
-			< 1100 * 1 => $"{Math.Round(number_of_bytes, 2):N2} B",
-			< 1100 * 1024 => $"{Math.Round(number_of_bytes / 1024, 2):N2} KiB",
-			< 1100 * 1024 * 1024 => $"{Math.Round(number_of_bytes / (1024 * 1024), 2):N2} MiB",
-			>= 1100 * 1024 * 1024 => $"{Math.Round(number_of_bytes / (1024 * 1024 * 1024), 2):N2} GiB",
-			double.NaN => "unknown"
+			< 1100  * 1           => $"{Math.Round(numberOfBytes,                        2):N2} B",
+			< 1100  * 1024        => $"{Math.Round(numberOfBytes / 1024,                 2):N2} KiB",
+			< 1100  * 1024 * 1024 => $"{Math.Round(numberOfBytes / (1024 * 1024),        2):N2} MiB",
+			>= 1100 * 1024 * 1024 => $"{Math.Round(numberOfBytes / (1024 * 1024 * 1024), 2):N2} GiB",
+			double.NaN            => "unknown"
 		};
-	}
-	public static string Pluralize(this int quantity, string suffix) => quantity == 1 ? quantity.ToString() + " " + suffix : quantity.ToString() + " " + suffix + "s";
+
+	public static string Pluralize(this int quantity, string suffix) =>
+		quantity == 1 ? quantity + " " + suffix : quantity + " " + suffix + "s";
+
 	public static void PromptUser(string message)
 	{
 		Console.Write(message);
 		_ = Console.ReadKey(true);
 		Console.Write('\r' + new string(' ', message.Length) + '\r');
 	}
+
 	public static void PromptUserToContinue() => PromptUser("Press any key to continue or Ctrl-C to abort.");
-	public static void PromptBeforeExit() => PromptUser("Press any key to exit.");
+	public static void PromptBeforeExit()     => PromptUser("Press any key to exit.");
 }
