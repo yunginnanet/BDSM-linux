@@ -9,7 +9,7 @@ namespace BDSM.Tests;
 
 public static class ConfigurationTestData
 {
-	public const string ValidGamePath   = @"/media/games/HoneySelect 2 DX";
+	public const string ValidGamePath   = @"/tmp/games/HoneySelect 2 DX";
 	public const string InvalidGamePath = @"/asdf/DoesntExist";
 
 	public const string v032YAMLAllPacks =
