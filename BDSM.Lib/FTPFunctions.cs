@@ -30,6 +30,8 @@ public static class FTPFunctions
 			Encoding = Encoding.UTF8,
 			//LegacyLogger = LogFTPMessage
 		};
+//	new(repoinfo.Address, repoinfo.Username, repoinfo.EffectivePassword, repoinfo.Port) { Config = BetterRepackRepositoryDefinitions.DefaultRepoConnectionConfig, Encoding = Encoding.UTF8 };
+
 	public static FtpClient DefaultSideloaderClient() => SetupFTPClient(BetterRepackRepositoryDefinitions.DefaultConnectionInfo);
 	public static bool TryConnect(FtpClient client, int max_retries = 3)
 	{

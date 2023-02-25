@@ -1,6 +1,4 @@
 ﻿using System.Collections.Immutable;
-using System.Numerics;
-using static System.Convert;
 
 using FluentFTP;
 
@@ -129,55 +127,16 @@ public static class BetterRepackRepositoryDefinitions
 	public static string UserDataModpackName(bool is_hs2) => is_hs2 ? UserDataHS2ModpackName : UserDataAISModpackName;
 	public static string ExclusiveModpack(bool is_hs2) => is_hs2 ? ExclusiveHS2ModpackName : ExclusiveAISModpackName;
 
-	public static readonly List<RepoConnectionInfo> RepoConnectionInfos = new()
-	{	new()
-		{
-			Address = Nice("ɊɒȖɜɑɘɞɓɘȗɌɘɖ"), //ais
-			Username = Nice("ɜɒɍɎɕɘɊɍɎɛ"),
-			Password = Nice("ɜɒɍɎɕɘɊɍɎɛȜ"),
-			Port = Nice<int>("țȚțȚ"),
-			RootPath = Nice("ȘȪȲȘ"),
-			MaxConnections = Nice<int>("Ȝ"),
-		},
-		new()
-		{
-			Address = Nice("ɋɎɝɝɎɛɛɎəɊɌɔȗɌɘɖ"), //br
-			Username = Nice("ɜɒɍɎɕɘɊɍɎɛ"),
-			Password = Nice("ɜɒɍɎɕɘɊɍɎɛȜ"),
-			Port = Nice<int>("țȚțȚ"),
-			RootPath = Nice("ȘȪȲȘ"),
-			MaxConnections = Nice<int>("Ȝ"),
-		},
-		new()
-		{
-			Address = Nice("ɎɞɜțȗɋɎɝɝɎɛɛɎəɊɌɔȗɌɘɖ"), //e2
-			Username = Nice("ɜɒɍɎɕɘɊɍɎɛ"),
-			Password = Nice("ɜɒɍɎɕɘɊɍɎɛȜ"),
-			Port = Nice<int>("țȚțȚ"),
-			RootPath = Nice("ȘȪȲȘ"),
-			MaxConnections = Nice<int>("Ȝ"),
-		},
-		new()
-		{
-			Address = Nice("ɎɞɜȜȗɋɎɝɝɎɛɛɎəɊɌɔȗɌɘɖ"), //e3
-			Username = Nice("ɜɒɍɎɕɘɊɍɎɛ"),
-			Password = Nice("ɜɒɍɎɕɘɊɍɎɛȜ"),
-			Port = Nice<int>("țȚțȚ"),
-			RootPath = Nice("ȘȪȲȘ"),
-			MaxConnections = Nice<int>("Ȝ"),
-		},
-		new()
-		{
-			Address = Nice("ɜɒɍɎɕɘɊɍȗɋɎɝɝɎɛɛɎəɊɌɔȗɌɘɖ"), //side
-			Username = Nice("ɜɒɍɎɕɘɊɍɎɛ"),
-			Password = Nice("ɜɒɍɎɕɘɊɍɎɛȜ"),
-			Port = Nice<int>("țȚțȚ"),
-			RootPath = Nice("ȘȪȲȘ"),
-			MaxConnections = Nice<int>("Ȝ"),
-		},
+	public static readonly RepoConnectionInfo DefaultConnectionInfo = new()
+	{
+		Address = "sideload.betterrepack.com",
+		Username = "sideloader",
+		Password = null,
+		PasswordB64 = "c2lkZWxvYWRlcjM =",
+		Port = 2121,
+		RootPath = "/AI/",
+		MaxConnections = 5
 	};
-	static readonly Random RandomRepoIdx = new();
-	public static readonly RepoConnectionInfo DefaultConnectionInfo = RepoConnectionInfos[RandomRepoIdx.Next(0, 5)];
 
 	public static FtpConfig DefaultRepoConnectionConfig => new()
 	{
@@ -208,34 +167,5 @@ public static class BetterRepackRepositoryDefinitions
 			_ = modpack_pathmaps.Add(ModpackDefinitionToPathMapping(definition, gamepath, rootpath));
 		}
 		return modpack_pathmaps.ToImmutableHashSet();
-	}
-
-	public static string Nice(string sixtynine)
-	{
-		string clear = string.Empty;
-		foreach (char c in sixtynine)
-			clear += ToChar(ToInt32(c) - (69 + 420));
-		return clear;
-	}
-	public static int Nice<T>(string sixtynine) where T : IBinaryInteger<int>
-	{
-		string clear = string.Empty;
-		foreach (char c in sixtynine)
-			clear += ToChar(ToInt32(c) - (69 + 420));
-		return ToInt32(clear);
-	}
-	public static string SixtyNine(string nice)
-	{
-		string sixtynine = string.Empty;
-		foreach (char c in nice)
-			sixtynine += ToChar(ToInt32(c) + 69 + 420);
-		return sixtynine;
-	}
-	public static string SixtyNine(int nice)
-	{
-		string sixtynine = string.Empty;
-		foreach (char c in nice.ToString())
-			sixtynine += ToChar(c + 69 + 420);
-		return sixtynine;
 	}
 }
