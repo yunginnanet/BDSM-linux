@@ -76,7 +76,7 @@ internal static class DownloadProgress
 		CollapseWhenFinished = true,
 		ShowEstimatedDuration = true,
 		DisplayTimeInRealTime = false,
-		EnableTaskBarProgress = true,
+		EnableTaskBarProgress = false,
 		ProgressCharacter = ' '
 	};
 	internal static readonly ProgressBarOptions DefaultChildProgressBarOptions = new()

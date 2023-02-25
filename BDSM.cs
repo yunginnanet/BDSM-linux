@@ -24,12 +24,12 @@ namespace BDSM;
 public static partial class BDSM
 {
 	public const string VERSION = "0.3.11";
-	[LibraryImport("kernel32.dll", SetLastError = true)]
+	// [LibraryImport("kernel32.dll", SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	private static partial bool SetConsoleOutputCP(uint wCodePageID);
-	[LibraryImport("kernel32.dll", SetLastError = true)]
+	// private static partial bool SetConsoleOutputCP(uint wCodePageID);
+	// [LibraryImport("kernel32.dll", SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	private static partial bool SetConsoleCP(uint wCodePageID);
+	// private static partial bool SetConsoleCP(uint wCodePageID);
 	private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 	internal static FullUserConfiguration UserConfig;
 	static void CtrlCHandler(object sender, ConsoleCancelEventArgs args)
@@ -51,8 +51,8 @@ public static partial class BDSM
 
 	public static async Task<int> Main()
 	{
-		_ = SetConsoleOutputCP(65001);
-		_ = SetConsoleCP(65001);
+		// _ = SetConsoleOutputCP(65001);
+		// _ = SetConsoleCP(65001);
 		Console.CancelKeyPress += CtrlCHandler!;
 #if DEBUG
 		LogManager.Configuration = LoadCustomConfiguration(out bool is_custom_logger, LogLevel.Debug);
